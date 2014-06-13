@@ -1,7 +1,9 @@
 require 'ship'
 
 shared_examples 'a ship' do
-  let(:ship) { described_class.new([:A1]) }
+  let(:ship) { described_class.new([:A1]) } 
+  # need described class because
+  # using it_behaves_like in ships_spec
 
   it 'has some coordinates' do
     expect(ship.coordinates).to eq [:A1]
