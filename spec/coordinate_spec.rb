@@ -25,16 +25,16 @@ describe Coordinate do
 
 	context "knows if it's a valid coordinate" do
     it 'b5' do
-      expect(b5.on_grid?).to be true
+      expect(b5.valid?).to be true
     end
     it 'b11' do
-      expect(b11.on_grid?).to be false
+      expect(b11.valid?).to be false
     end
     it 'one' do
-      expect(one.on_grid?).to be false
+      expect(one.valid?).to be false
     end
     it 'a' do
-      expect(a.on_grid?).to be false
+      expect(a.valid?).to be false
     end
 	end
 

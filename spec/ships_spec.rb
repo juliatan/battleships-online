@@ -39,4 +39,8 @@ end
 
 describe AircraftCarrier do
   it_behaves_like 'a ship'
+
+  it 'can only cover 5 coordinates' do
+    expect{AircraftCarrier.new([1,2,3,4,5,6])}.to raise_error 'An AircraftCarrier can only cover 5 coordinates'
+  end
 end
