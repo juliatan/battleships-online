@@ -29,5 +29,8 @@ class Battleship < Ship
 end
 
 class AircraftCarrier < Ship
-
+  def initialize(coordinates)
+    raise 'An AircraftCarrier can only cover 5 coordinates' if coordinates.count > 5
+    super(coordinates)
+  end
 end
