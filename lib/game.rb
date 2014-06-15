@@ -21,7 +21,7 @@ post '/register' do
 end
 
 def current_board
-  @current_board ||= 
+  session[:current_board] ||= 
   ["","","","","","","","","","",
   "","","","","","","","","","",
   "","","","","","","","","","",
@@ -32,7 +32,7 @@ def current_board
   "","","","","","","","","","",
   "","","","","","","","","","",
   "","","","","","","","","",""]
-  @current_board
+  session[:current_board]
 end
 
 def translator
@@ -74,11 +74,11 @@ post '/battleship' do
   ac4 = Coordinate.new(params[:aircraft4])
   ac5 = Coordinate.new(params[:aircraft5])
 
-  string_coords = []
-  string_coords << params[:aircraft1] << params[:aircraft2] << params[:aircraft3] << params[:aircraft4] << params[:aircraft5]
-
   ac_coordinates = Coordinates.new(ac1,ac2,ac3,ac4,ac5)
   aircraft_carrier = AircraftCarrier.new(ac_coordinates)
+
+  string_coords = []
+  string_coords << params[:aircraft1] << params[:aircraft2] << params[:aircraft3] << params[:aircraft4] << params[:aircraft5]
 
   array_position = []
 
@@ -103,11 +103,20 @@ post '/submarine' do
   b3 = Coordinate.new(params[:battleship3])
   b4 = Coordinate.new(params[:battleship4])
 
+  b_coordinates1 = Coordinates.new(b1,b2,b3,b4)
+  battleship1 = Battleship.new(b_coordinates1)
+
+  b5 = Coordinate.new(params[:battleship5])
+  b6 = Coordinate.new(params[:battleship6])
+  b7 = Coordinate.new(params[:battleship7])
+  b8 = Coordinate.new(params[:battleship8])
+
+  b_coordinates2 = Coordinates.new(b5,b6,b7,b8)
+  battleship2 = Battleship.new(b_coordinates2)
+
   string_coords = []
   string_coords << params[:battleship1] << params[:battleship2] << params[:battleship3] << params[:battleship4]
-
-  b_coordinates = Coordinates.new(b1,b2,b3,b4)
-  battleship = Battleship.new(b_coordinates)
+  string_coords << params[:battleship5] << params[:battleship6] << params[:battleship7] << params[:battleship8]
 
   array_position = []
 
@@ -123,40 +132,129 @@ post '/submarine' do
     current_board[position] = "S"
   end
 
-  erb :battleship, :layout => :layout
+  erb :submarine, :layout => :layout
 end
 
+post '/cruiser' do
+  s1 = Coordinate.new(params[:submarine1])
+  s2 = Coordinate.new(params[:submarine2])
+  s3 = Coordinate.new(params[:submarine3])
 
+  s_coordinates1 = Coordinates.new(s1,s2,s3)
+  submarine1 = Submarine.new(s_coordinates1)
+  
+  s4 = Coordinate.new(params[:submarine4])
+  s5 = Coordinate.new(params[:submarine5])
+  s6 = Coordinate.new(params[:submarine6])
 
-__END__
-def random_sudoku
-  # use 9 numbers from 1 to 9, and 72 zeroes
-  # ensures no clashes since all numbers are different
-  # seed = (1..9).to_a.shuffle + Array.new(72, 0)
-  grid = Grid.new('015003002000100906270068430490002017501040380003905000900081040860070025037204600')
-  # generate a solved grid
-  grid.solve
-  grid.to_s.chars
-end
+  s_coordinates2 = Coordinates.new(s4,s5,s6)
+  submarine2 = Submarine.new(s_coordinates2)
 
-def puzzle(grid)
-  # then hide some of the values
-  grid = random_sudoku
-  indices = (1..81).to_a.sample(40)
-  indices.each do |index|
-    grid[index] = "" # blanks out some of the cells
+  string_coords = []
+  string_coords << params[:submarine1] << params[:submarine2] << params[:submarine3]
+  string_coords << params[:submarine4] << params[:submarine5] << params[:submarine6]
+
+  array_position = []
+
+  translator.each do |key, value|
+    string_coords.each do |coord|
+      if value == coord
+        array_position << key
+      end
+    end
   end
-  grid # gives an array of 81 individual values
+
+  array_position.map do |position|
+    current_board[position] = "S"
+  end
+
+  erb :cruiser, :layout => :layout
 end
 
-get '/' do
-  sudoku = random_sudoku # method call to generate a solved board
-  session[:solution] = sudoku
-  @current_solution = puzzle(sudoku) # board with some values deleted
-  erb :index, :layout => :layout
+post '/destroyer' do
+  c1 = Coordinate.new(params[:cruiser1])
+  c2 = Coordinate.new(params[:cruiser2])
+  c3 = Coordinate.new(params[:cruiser3])
+
+  c_coordinates1 = Coordinates.new(c1,c2,c3)
+  cruiser1 = Cruiser.new(c_coordinates1)
+
+  c4 = Coordinate.new(params[:cruiser4])
+  c5 = Coordinate.new(params[:cruiser5])
+  c6 = Coordinate.new(params[:cruiser6])
+ 
+  c_coordinates2 = Coordinates.new(c4,c5,c6)
+  cruiser2 = Cruiser.new(c_coordinates2)
+
+  string_coords = []
+  string_coords << params[:cruiser1] << params[:cruiser2] << params[:cruiser3]
+  string_coords << params[:cruiser4]<< params[:cruiser5] << params[:cruiser6]
+
+  array_position = []
+
+  translator.each do |key, value|
+    string_coords.each do |coord|
+      if value == coord
+        array_position << key
+      end
+    end
+  end
+
+  array_position.map do |position|
+    current_board[position] = "S"
+  end
+
+  erb :destroyer, :layout => :layout
 end
 
-get '/solution' do # get the answer
-  @current_solution = session[:solution]
-  erb :index, :layout => :layout
+post '/ships' do
+  d1 = Coordinate.new(params[:destroyer1])
+  d2 = Coordinate.new(params[:destroyer2])
+
+  d_coordinates1 = Coordinates.new(d1,d2)
+  destroyer1 = Destroyer.new(d_coordinates1)
+
+  d3 = Coordinate.new(params[:destroyer3])
+  d4 = Coordinate.new(params[:destroyer4])
+
+  d_coordinates2 = Coordinates.new(d3,d4)
+  destroyer2 = Destroyer.new(d_coordinates2)
+
+  d5 = Coordinate.new(params[:destroyer5])
+  d6 = Coordinate.new(params[:destroyer6])
+  
+  d_coordinates3 = Coordinates.new(d5,d6)
+  destroyer3 = Destroyer.new(d_coordinates3)
+
+  d7 = Coordinate.new(params[:destroyer7])
+  d8 = Coordinate.new(params[:destroyer8])
+  
+  d_coordinates4 = Coordinates.new(d7,d8)
+  destroyer4 = Destroyer.new(d_coordinates4)
+
+  string_coords = []
+  string_coords << params[:destroyer1] << params[:destroyer2]
+  string_coords << params[:destroyer3] << params[:destroyer4]
+  string_coords << params[:destroyer5] << params[:destroyer6]
+  string_coords << params[:destroyer7] << params[:destroyer8]
+
+  array_position = []
+
+  translator.each do |key, value|
+    string_coords.each do |coord|
+      if value == coord
+        array_position << key
+      end
+    end
+  end
+
+  array_position.map do |position|
+    current_board[position] = "S"
+  end
+
+  erb :ships, :layout => :layout
+end
+
+get '/shoot' do
+  erb :shoot, :layout => :layout
 end

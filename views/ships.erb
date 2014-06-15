@@ -1,0 +1,22 @@
+<h1>Online Battleships</h1>
+
+<h2>Here's a summary of your ships</h2>
+
+<a href="/shoot">
+  <button>Let's go shootin'</button>
+</a>
+
+<div id = "board"> <!-- squashes all input cells together -->
+  <% 10.times do |row| %>
+    <div class = "row">
+      <% 10.times do |cell| %>
+        <div class = "cell">
+          <% cell_index = row * 10 + cell %>
+          <% cell_coordinate = translator[cell_index] %>
+          <% cell_value = current_board[cell_index] %>
+          <input type="text" maxlength="1" autocomplete="off" value="<%= cell_value %>" >
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
