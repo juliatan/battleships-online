@@ -7,7 +7,7 @@ class Ship
   end
 
   def hit(coordinate)
-    return @hits << coordinate if can_be_hit_at?(coordinate)
+    @hits << coordinate if can_be_hit_at?(coordinate)
     self
   end
 

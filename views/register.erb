@@ -1,0 +1,7 @@
+<h2>Welcome <%= params[:name] %>! There's <%= session[:users] %> players.</h2>
+
+<% if session[:users] > 1 %>
+  <a href="/play">
+    <button>Start Game</button>
+  </a>
+<% end %>
